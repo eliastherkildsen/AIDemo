@@ -1,5 +1,4 @@
 import React, { useRef } from 'react';
-import exampleImage from './assets/u5.jpg';
 import * as tf from '@tensorflow/tfjs';
 
 let model = null;
@@ -7,7 +6,7 @@ tf.loadLayersModel('/model.json').then(loadedModel => {
     model = loadedModel;
 }).catch(error => console.error('Failed to load model', error));
 
-function ImageRecognizerComponent5() {
+function ImageRecognizerComponent1( { imageSrc }) {
     const imageRef = useRef(null);
 
     async function recognizeImage() {
@@ -27,7 +26,7 @@ function ImageRecognizerComponent5() {
             const probabilities = await prediction.data();
             // Get the class index with the highest probability
             const predictedIndex = prediction.argMax(1).dataSync()[0];
-            document.getElementById('i5').value = predictedIndex;
+            document.getElementById('i1').value = predictedIndex;
            
         } catch (error) {
             console.error('Error during prediction', error);
@@ -36,12 +35,12 @@ function ImageRecognizerComponent5() {
 
     return (
         <div>
-            <h5>Ukendt billede #5</h5>
-            <img ref={imageRef} src={exampleImage} width="224" height="224" /> <br/>
+            <h5>Ukendt billede #1</h5>
+            <img ref={imageRef} src={imageSrc} width="224" height="224" /> <br/>
             <button onClick={recognizeImage}>Kør billedegenkendelse...</button> <br/>
-            <input id="i5" type="text"  readOnly />
+            <input id="i1" type="text"  readOnly />
         </div>
     );
 }
 
-export default ImageRecognizerComponent5;
+export default ImageRecognizerComponent1;

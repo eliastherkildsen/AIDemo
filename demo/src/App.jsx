@@ -1,17 +1,25 @@
 import React from 'react';
 
+import ImageRecognizerComponent from './ImageRecognizerComponent'
 
-import ImageRecognizerComponent1 from './ImageRecognizerComponent1'
-import ImageRecognizerComponent2 from './ImageRecognizerComponent2'
-import ImageRecognizerComponent3 from './ImageRecognizerComponent3'
-import ImageRecognizerComponent4 from './ImageRecognizerComponent4'
-import ImageRecognizerComponent5 from './ImageRecognizerComponent5'
+import exampleImage1 from './assets/u1.jpg';
+import exampleImage2 from './assets/u2.jpg';
+import exampleImage3 from './assets/u3.jpg';
+import exampleImage4 from './assets/u4.jpg';
+import exampleImage5 from './assets/u5.jpg';
+
+const images = [exampleImage1, exampleImage2, exampleImage3, exampleImage4, exampleImage5];
+
 function App() {
   return (
     <div>
       <h1> Billedegenkendelse - 5 ukendte billeder</h1>
       <table>    
-         <tr> <td> <ImageRecognizerComponent1 /> </td> <td> <ImageRecognizerComponent2 /> </td> <td> <ImageRecognizerComponent3 /> </td> <td> <ImageRecognizerComponent4 /> </td> <td> <ImageRecognizerComponent5 /> </td></tr> 
+        <tr> 
+          {images.map((src, index) => (
+            <td key={index} > <ImageRecognizerComponent imageSrc={src} /> </td> 
+          ))}
+        </tr> 
       </table>
     </div>
   );

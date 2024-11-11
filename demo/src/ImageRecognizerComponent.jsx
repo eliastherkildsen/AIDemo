@@ -6,7 +6,7 @@ tf.loadLayersModel('/model.json').then(loadedModel => {
     model = loadedModel;
 }).catch(error => console.error('Failed to load model', error));
 
-function ImageRecognizerComponent1( { imageSrc }) {
+function ImageRecognizerComponent1( { imageSrc, inputId }) {
     const imageRef = useRef(null);
 
     async function recognizeImage() {
@@ -26,7 +26,7 @@ function ImageRecognizerComponent1( { imageSrc }) {
             const probabilities = await prediction.data();
             // Get the class index with the highest probability
             const predictedIndex = prediction.argMax(1).dataSync()[0];
-            document.getElementById('i1').value = predictedIndex;
+            document.getElementById({ inputId }).value = predictedIndex;
            
         } catch (error) {
             console.error('Error during prediction', error);
@@ -38,7 +38,7 @@ function ImageRecognizerComponent1( { imageSrc }) {
             <h5>Ukendt billede #1</h5>
             <img ref={imageRef} src={imageSrc} width="224" height="224" /> <br/>
             <button onClick={recognizeImage}>Kør billedegenkendelse...</button> <br/>
-            <input id="i1" type="text"  readOnly />
+            <input id={ inputId } type="text"  readOnly />
         </div>
     );
 }

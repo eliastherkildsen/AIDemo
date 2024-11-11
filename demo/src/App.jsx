@@ -17,9 +17,11 @@ function App() {
       <table>    
         <tr> 
           {images.map((src, index) => (
-            <td key={index} > <ImageRecognizerComponent imageSrc={src} /> </td> 
+            <td key={index}>
+              <ImageRecognizerComponent inputId={`input-${index}`} imageSrc={src} />
+            </td>
           ))}
-        </tr> 
+        </tr>
       </table>
     </div>
   );

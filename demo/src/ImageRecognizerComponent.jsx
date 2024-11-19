@@ -1,55 +1,91 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import * as tf from '@tensorflow/tfjs';
 
-// Load the model
-let model = null;
-tf.loadLayersModel('/model.json').then(loadedModel => {
-    model = loadedModel;
-}).catch(error => console.error('Failed to load model', error));
-
-function ImageRecognizerComponent({ imageSrc, inputId }) {
+function ImageRecognizerComponent({ imageSrc, inputId, labels }) {
     const imageRef = useRef(null);
-    const inputRef = useRef(null);  // Ref for the input element
+    const inputRef = useRef(null);
+    const [predictions, setPredictions] = useState([]);
+    const [isModelLoaded, setIsModelLoaded] = useState(false);
+
+    useEffect(() => {
+        tf.loadLayersModel('/model.json')
+            .then(loadedModel => {
+                window.model = loadedModel;
+                setIsModelLoaded(true);
+            })
+            .catch(error => console.error('Failed to load model', error));
+    }, []);
 
     async function recognizeImage() {
-        if (!model) {
+        if (!window.model) {
             console.log('Model not loaded yet');
             return;
         }
 
-        const tensor = tf.browser.fromPixels(imageRef.current)
-            .resizeNearestNeighbor([224, 224])
-            .toFloat()
-            .expandDims(0);
-
         try {
-            const prediction = await model.predict(tensor);
-            const predictedIndex = prediction.argMax(1).dataSync()[0];
+            const tensor = tf.browser.fromPixels(imageRef.current)
+                .resizeNearestNeighbor([224, 224])
+                .toFloat()
+                .expandDims(0);
 
-            console.log(prediction)
-            console.log(predictedIndex)
+            const prediction = await window.model.predict(tensor).data();
+            const predictionArray = Array.from(prediction);
 
-            // Set the value of the input element using the ref
+            // Pair predictions with labels and sort by probability
+            const sortedPredictions = predictionArray
+                .map((probability, index) => ({
+                    label: labels[index],
+                    probability: (probability * 100).toFixed(2), // Convert to percentage
+                }))
+                .sort((a, b) => b.probability - a.probability);
+
+            setPredictions(sortedPredictions);
+
             if (inputRef.current) {
-                inputRef.current.value = predictedIndex;
-            } else {
-                console.error(`Input element with id ${inputId} not found`);
+                inputRef.current.value = sortedPredictions[0].label;
             }
         } catch (error) {
-            console.error('Error during prediction', error);
+            console.error('Error during prediction:', error);
         }
     }
 
     return (
-        <div className='image-container'>
-            <h5>Ukendt billede #1</h5>
-            <img ref={imageRef} src={imageSrc} width="224" height="224" alt="To be recognized" /> <br />
+        <div className="image-container">
+            <h5>Ukendt billede</h5>
+            <img
+                ref={imageRef}
+                src={imageSrc}
+                width="224"
+                height="224"
+                alt="To be recognized"
+            />
 
-            <div className='image-container-footer'>
-            <button onClick={recognizeImage}>Kør</button> <br />
-            <input ref={inputRef} id={inputId} type="text" readOnly />
+
+            <div className="image-container-footer">
+                <button onClick={recognizeImage} disabled={!isModelLoaded}>
+                    {isModelLoaded ? 'Kør' : 'Indlæser model...'}
+                </button>
+                <input
+                    ref={inputRef}
+                    id={inputId}
+                    type="text"
+                    readOnly
+                    placeholder="Prediction will appear here"
+                />
             </div>
 
+            {predictions.length > 0 && (
+                <div className="predictions">
+                    <h6>Predictions:</h6>
+                    <ul>
+                        {predictions.map(({ label, probability }, index) => (
+                            <li key={index}>
+                                <strong>{label}</strong>: {probability}%
+                            </li>
+                        ))}
+                    </ul>
+                </div>
+            )}
         </div>
     );
 }

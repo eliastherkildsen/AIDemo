@@ -1,14 +1,3 @@
-.app-container {
-  display: grid;
-  grid-template-rows: 1fr 1fr; /* Two equal-height rows */
-  grid-template-columns: repeat(3, 1fr); /* Three equal-width columns */
-  gap: 15px; /* Increased spacing for better separation */
-  padding: 20px; /* More padding for a balanced layout */
-  background-color: #f9f9f9; /* Subtle background color for a clean look */
-  border-radius: 8px; /* Rounded edges for modern aesthetics */
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Soft shadow for depth */
-}
-
 .image-wrapper {
   display: flex;
   align-items: center;
@@ -20,24 +9,27 @@
   transition: transform 0.3s ease, box-shadow 0.3s ease; /* Smooth hover effect */
 }
 
+
 .image-container:hover {
-  transform: scale(1.05); /* Slight zoom on hover */
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15); /* Enhanced shadow for hover */
+  transform: scale(1.05);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
 }
 
 .image-container {
   margin: 10px;
   font-size: 22px;
   text-align: center;
-  color: #333; /* Neutral text color for readability */
+  color: #333;
+  border-radius: 10px;
+  padding: 16px;
 }
 
 .image-container-footer {
   display: flex;
   flex-direction: row;
-  justify-content: space-between; /* Spreads out footer content */
-  padding: 5px 10px; /* Adds spacing for better alignment */
-  border-top: 1px solid #eaeaea; /* Delicate separator line */
-  font-size: 16px; /* Slightly smaller font for distinction */
-  color: #666; /* Muted color for secondary info */
+  justify-content: space-between;
+  padding: 5px 10px;
+  border-top: 1px solid #eaeaea;
+  font-size: 16px;
+  color: #666;
 }

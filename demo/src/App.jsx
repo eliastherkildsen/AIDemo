@@ -13,7 +13,7 @@ const images = [exampleImage1, exampleImage2, exampleImage3, exampleImage4, exam
 function App() {
   return (
     <div>
-      <h1> Billedegenkendelse - 5 ukendte billeder</h1>
+      <h1> Billedegenkendelse - {images.length} ukendte billeder</h1>
       <table>    
         <tr> 
           {images.map((src, index) => (

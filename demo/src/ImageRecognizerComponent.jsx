@@ -41,11 +41,15 @@ function ImageRecognizerComponent({ imageSrc, inputId }) {
     }
 
     return (
-        <div>
+        <div className='image-container'>
             <h5>Ukendt billede #1</h5>
             <img ref={imageRef} src={imageSrc} width="224" height="224" alt="To be recognized" /> <br />
-            <button onClick={recognizeImage}>Kør billedegenkendelse...</button> <br />
+
+            <div className='image-container-footer'>
+            <button onClick={recognizeImage}>Kør</button> <br />
             <input ref={inputRef} id={inputId} type="text" readOnly />
+            </div>
+
         </div>
     );
 }
